@@ -1,7 +1,6 @@
 import React from "react";
 import "../message/message.scss";
-// import useName from "../../store/name/name.ts";
-// import useMessageStore from "../../store/messageText/messageText.ts";
+import useName from "../../store/name/name.ts";
 
 type Props = {
   name: string;
@@ -9,8 +8,11 @@ type Props = {
 };
 
 const Message = (props: Props) => {
+  const username = useName((state) => state.username);
+  const isCurrentUser = username === props.name;
+
   return (
-    <div className="message">
+    <div className={`message ${isCurrentUser ? "align-right" : ""}`}>
       <span className="name">{props.name}</span>
       <p>{props.message}</p>
     </div>

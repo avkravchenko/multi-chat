@@ -3,7 +3,7 @@ import "./display.scss";
 import { io, Socket } from "socket.io-client";
 import Message from "../message/Message.tsx";
 import useName from "../../store/name/name.ts";
-import useAllMessages from "../../store/allMessages/allMessages.ts";
+import useAllMessages from "../../store/allMessages/allMessages";
 
 const socket: Socket = io("http://localhost:5001");
 
@@ -41,13 +41,6 @@ const Display = (props: Props) => {
 
   return (
     <div className="display">
-      {userJoin.map((newUser) => {
-        return (
-          <p
-            key={crypto.randomUUID()}
-          >{`${newUser.username} has join the chat`}</p>
-        );
-      })}
       {allMessages.map((data) => {
         return (
           <Message
@@ -57,6 +50,9 @@ const Display = (props: Props) => {
           />
         );
       })}
+      {userJoin.length > 0 ? (
+        <p>{`${userJoin[userJoin.length - 1].username} has join the chat`}</p>
+      ) : null}
     </div>
   );
 };

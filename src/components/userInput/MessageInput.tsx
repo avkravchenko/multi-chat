@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./message-input.scss";
 import UIButton from "../UIButton/UIButton.tsx";
-import useAllMessages from "../../store/allMessages/allMessages.ts";
+import useAllMessages from "../../store/allMessages/allMessages";
 import { Socket, io } from "socket.io-client";
 import useName from "../../store/name/name.ts";
 
