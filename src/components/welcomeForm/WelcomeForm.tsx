@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import UIButton from "../UIButton/UIButton.tsx";
 import "./welcome-form.scss";
+import { Router, useNavigate } from "react-router";
+import useName from "../../store/name/name.ts";
 
 const WelcomeForm: React.FC = () => {
-  const [username, setUsername] = useState("");
+  const username = useName((state) => state.username);
+  const updateUserName = useName((state) => state.updateName);
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(username.trim());
+    if (username) {
+      navigate("/chat");
+    } else {
+      alert("Please fill the name field");
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+    updateUserName(event.target.value);
   };
 
   return (
