@@ -2,7 +2,7 @@ import React from "react";
 import "../message/message.scss";
 import useName from "../../store/name/name.ts";
 import dayjs from "dayjs";
-import "dayjs/locale/ru"; // Import the Russian locale
+import "dayjs/locale/ru";
 
 dayjs.locale("ru");
 
