@@ -4,38 +4,31 @@ import { io, Socket } from "socket.io-client";
 import Message from "../message/Message.tsx";
 import useName from "../../store/name/name.ts";
 import useAllMessages from "../../store/allMessages/allMessages";
+import useAllUsers from "../../store/allUsers/useAllUsers.ts";
 
 const socket: Socket = io("http://localhost:5001");
 
-type Props = {};
-
-type User = {
-  username: string;
-  id: string;
-};
-
-const Display = (props: Props) => {
+const Display = () => {
   const { username, id } = useName((state) => state);
-  const [userJoin, setUserJoin] = useState<User[]>([]);
+  const users = useAllUsers((state) => state.allUsers);
+  const addUser = useAllUsers((state) => state.addUser);
   const allMessages = useAllMessages((state) => state.allMessages);
   const addMessage = useAllMessages((state) => state.addMessage);
 
   useEffect(() => {
     socket.emit("join", { username, id });
-    console.log(1);
   }, []);
 
   useEffect(() => {
     socket.on("eventClient", (data) => {
-      console.log(data);
-      setUserJoin((prev) => [...prev, data]);
+      console.log("user", data);
+      addUser(data);
     });
   }, []);
 
   useEffect(() => {
     socket.on("getMessage", (data) => {
       addMessage(data);
-      console.log(data);
     });
   }, []);
 
@@ -47,11 +40,12 @@ const Display = (props: Props) => {
             key={crypto.randomUUID()}
             name={data.currentUser.username}
             message={data.message}
+            date={data.date}
           />
         );
       })}
-      {userJoin.length > 0 ? (
-        <p>{`${userJoin[userJoin.length - 1].username} has join the chat`}</p>
+      {users.length > 0 ? (
+        <p>{`${users[users.length - 1].username} has join the chat`}</p>
       ) : null}
     </div>
   );
